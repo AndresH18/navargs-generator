@@ -1,6 +1,6 @@
 ﻿namespace NavArgs.Generator;
 
-public interface INavArgs
+internal interface INavArgs
 {
     IDictionary<string, object?> ToDictionary();
 }

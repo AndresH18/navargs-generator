@@ -18,13 +18,13 @@ public class NavDestinationGenerator : IIncrementalGenerator
     {
         context.RegisterPostInitializationOutput(static ctx =>
         {
-            ctx.AddSource($"{Namespace}.{NavAttributeName}.g.cs", SourceText.From(NavAttributeSourceCode, Encoding.UTF8));
-            ctx.AddSource($"{Namespace}.{NavInterfaceName}.g.cs", SourceText.From(NavInterfaceSourceCode, Encoding.UTF8));
-            ctx.AddSource($"{Namespace}.{ArgsInterfaceName}.g.cs", SourceText.From(ArgsInterfaceSourceCode, Encoding.UTF8));
+            ctx.AddSource($"{NavAttributeFullName}.g.cs", SourceText.From(NavAttributeSourceCode, Encoding.UTF8));
+            ctx.AddSource($"{NavInterfaceFullName}.g.cs", SourceText.From(NavInterfaceSourceCode, Encoding.UTF8));
+            ctx.AddSource($"{ArgsInterfaceFullName}.g.cs", SourceText.From(ArgsInterfaceSourceCode, Encoding.UTF8));
         });
         
         var provider = context.SyntaxProvider.ForAttributeWithMetadataName(
-                $"{Namespace}.{NavAttributeName}",
+                $"{NavAttributeFullName}",
                 static (node, _) => IsCandidate(node),
                 static (context, token) =>
                 {

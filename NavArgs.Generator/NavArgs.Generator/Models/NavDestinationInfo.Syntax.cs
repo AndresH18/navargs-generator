@@ -45,9 +45,27 @@ internal partial record NavDestinationInfo
 
     private static ClassDeclarationSyntax PartialClassDeclaration(NavDestinationInfo info)
     {
-        var members = List<MemberDeclarationSyntax>([
-            GetArgsMethodDeclaration(info),
-        ]);
+        MemberDeclarationSyntax[] membersList;
+        if (info.Route != null)
+        {
+            membersList =
+            [
+                RoutePropertyDeclaration(info.Route),
+                GetArgsMethodDeclaration(info)
+            ];
+        }
+        else
+        {
+            membersList = [GetArgsMethodDeclaration(info)];
+        }
+
+        var members = List(membersList);
+
+        if (info.Route != null)
+        {
+            members.Add(RoutePropertyDeclaration(info.Route));
+        }
+
         return ClassDeclaration(info.QualifiedName)
             .WithMembers(members)
             .WithModifiers(TokenList(
@@ -407,97 +425,15 @@ internal partial record NavDestinationInfo
             .WithBody(Block(returnStatement));
         return method;
     }
-}
 
-public class SOmeDestination : INavDestination
-{
-    public string Route { get; set; }
-    public string Name { get; set; }
-    public int Id { get; set; }
-
-    public INavArgs GetArgs()
+    private static PropertyDeclarationSyntax RoutePropertyDeclaration(string route)
     {
-        return new SomeArgs
-        {
-            Name = Name,
-            Id = Id
-        };
-    }
-}
-
-public class SomeArgs : INavArgs
-{
-    public string Name { get; set; }
-    public int Id { get; init; }
-
-    public IDictionary<string, object> ToDictionary()
-    {
-        return new Dictionary<string, object>
-        {
-            [nameof(Name)] = Name,
-            [nameof(Id)] = Id
-        };
-    }
-
-    public static SomeArgs FromDictionary(IDictionary<string, object> dictionary)
-    {
-        var instance = new SomeArgs();
-        if (dictionary.TryGetValue(nameof(Name), out var name))
-        {
-            instance.Name = (string)Convert.ChangeType(name, typeof(string));
-        }
-
-        // if (dictionary.TryGetValue(nameof(Id), out var id))
-        // {
-        //     instance.Id = (int)Convert.ChangeType(id, typeof(int));
-        // }
-
-        return new SomeArgs
-        {
-            Name = (string)dictionary[nameof(Name)],
-            Id = (int)dictionary[nameof(Id)]
-        };
-    }
-}
-
-public sealed class SampleNavDestinationArgs : INavArgs
-{
-    public string? Name { get; private set; }
-    public int Id { get; private set; }
-
-    private SampleNavDestinationArgs()
-    {
-        // Required for deserialization.
-    }
-
-    public SampleNavDestinationArgs(string name, int id)
-    {
-        Name = name;
-        Id = id;
-    }
-
-    public static SampleNavDestinationArgs FromDictionary(Dictionary<string, object?> dictionary)
-    {
-        var instance = new SampleNavDestinationArgs();
-        if (dictionary.TryGetValue(nameof(Name), out var valueName) && valueName != null)
-        {
-            instance.Name = (string?)Convert.ChangeType(valueName, typeof(string));
-        }
-
-        if (dictionary.TryGetValue(nameof(Id), out var valueId))
-        {
-            instance.Id = (int)Convert.ChangeType(valueId, typeof(int));
-        }
-
-        return instance;
-    }
-
-    public IDictionary<string, object?> ToDictionary()
-    {
-        return new Dictionary<string, object?>
-        {
-            [nameof(Name)] = this.Name,
-            [nameof(Id)] = this.Id
-        };
+        return PropertyDeclaration(PredefinedType(Token(SyntaxKind.StringKeyword)), Identifier("Route"))
+            .AddModifiers(Token(SyntaxKind.PublicKeyword))
+            .WithExpressionBody(
+                ArrowExpressionClause(Token(SyntaxKind.EqualsGreaterThanToken),
+                    LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(route))
+                )
+            ).WithSemicolonToken(Token(SyntaxKind.SemicolonToken));
     }
 }

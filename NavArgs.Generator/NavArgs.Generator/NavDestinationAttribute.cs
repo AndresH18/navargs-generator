@@ -1,4 +1,7 @@
 ﻿namespace NavArgs.Generator;
 
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-public class NavDestinationAttribute : Attribute;
+internal class NavDestinationAttribute : Attribute
+{
+    public string Route { get; init; } = string.Empty;
+}

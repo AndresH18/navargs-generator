@@ -6,11 +6,12 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using NavArgs.Generator.Models;
+using static NavArgs.Generator.Constants;
 
 namespace NavArgs.Generator;
 
 [Generator(LanguageNames.CSharp)]
-public partial class NavDestinationGenerator : IIncrementalGenerator
+public class NavDestinationGenerator : IIncrementalGenerator
 {
 
     public void Initialize(IncrementalGeneratorInitializationContext context)

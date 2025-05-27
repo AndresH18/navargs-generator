@@ -2,5 +2,5 @@
 
 public interface INavArgs
 {
-    IDictionary<string, object> ToDictionary();
+    IDictionary<string, object?> ToDictionary();
 }

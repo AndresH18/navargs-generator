@@ -7,7 +7,8 @@ namespace NavArgs.Generator.Sample;
 [NavDestination]
 public partial class SampleNavDestination : INavDestination
 {
-    public string Name { get; set; }
+    public string Route { get; set; }
+    public string? Name { get; set; }
     public int Id { get; set; }
     public Uri Uri { get; set; }
 }

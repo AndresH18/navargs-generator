@@ -1,0 +1,293 @@
+﻿using System.Collections.Immutable;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+
+namespace NavArgs.Generator.Models;
+
+internal partial record NavDestinationInfo
+{
+    private const string FromDictionaryName = "FromDictionary";
+    private const string ToDictionaryName = "ToDictionary";
+    private const string DictionaryVariable = "dictionary";
+    private const string InstanceVariable = "instance";
+
+    public CompilationUnitSyntax GetCompilationUnit()
+    {
+        var usingsDeclaration = new[]
+        {
+            UsingDirective(ParseName("System")),
+            UsingDirective(ParseName("System.Collections.Generic")),
+        };
+
+        MemberDeclarationSyntax[] classDeclarations =
+        [
+            ClassDeclaration(QualifiedName)
+                .AddModifiers(Token(SyntaxKind.PartialKeyword)),
+            ArgsClassDeclaration(this)
+        ];
+
+        // var namespaceDeclaration = FileScopedNamespaceDeclaration(IdentifierName(Namespace))
+        var namespaceDeclaration = NamespaceDeclaration(IdentifierName(Namespace))
+            .AddMembers(classDeclarations);
+
+        return CompilationUnit()
+                .AddUsings(usingsDeclaration)
+                .AddMembers(namespaceDeclaration)
+                .NormalizeWhitespace()
+            ;
+    }
+
+    private static ClassDeclarationSyntax ArgsClassDeclaration(NavDestinationInfo info)
+    {
+        MemberDeclarationSyntax[] propertiesDeclaration =
+            info.Properties.Select(GetPropertyDeclaration).ToArray<MemberDeclarationSyntax>();
+        MemberDeclarationSyntax[] methodsDeclaration =
+        [
+            FromDictionaryMethodDeclaration(info.QualifiedName, info.Properties),
+            ToDictionaryMethodDeclaration(info.Properties),
+        ];
+
+        MemberDeclarationSyntax[] classMembers = propertiesDeclaration.Concat(methodsDeclaration).ToArray();
+
+        var classDeclaration = ClassDeclaration(Identifier($"{info.QualifiedName}Args"))
+            .AddModifiers(Token(SyntaxKind.PublicKeyword))
+            .AddMembers(classMembers);
+        return classDeclaration;
+    }
+
+    private static MethodDeclarationSyntax ToDictionaryMethodDeclaration(ImmutableArray<PropertyInfo> properties)
+    {
+        var assignmentExpressions =
+            properties.Select(p => AssignmentExpression(
+                    SyntaxKind.SimpleAssignmentExpression,
+                    left: ImplicitElementAccess(
+                        BracketedArgumentList(
+                            SingletonSeparatedList(
+                                Argument(InvocationExpression(
+                                        IdentifierName("nameof"),
+                                        ArgumentList(
+                                            SingletonSeparatedList(Argument(IdentifierName(p.Name)))
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    ),
+                    right: MemberAccessExpression(
+                        SyntaxKind.SimpleMemberAccessExpression,
+                        ThisExpression(),
+                        IdentifierName(p.Name)
+                    )
+                )
+            ).ToArray();
+
+        var dictionaryCreation = ObjectCreationExpression(
+            GenericName(
+                Identifier("Dictionary"),
+                TypeArgumentList(
+                    SeparatedList<TypeSyntax>(
+                        [
+                            PredefinedType(Token(SyntaxKind.StringKeyword)),
+                            PredefinedType(Token(SyntaxKind.ObjectKeyword)),
+                        ]
+                    )
+                )
+            ), ArgumentList(SeparatedList<ArgumentSyntax>()),
+            InitializerExpression(SyntaxKind.ObjectInitializerExpression,
+                SeparatedList<ExpressionSyntax>(assignmentExpressions))
+        );
+
+        var returnStatement = ReturnStatement(dictionaryCreation);
+
+        var method = MethodDeclaration(
+                GenericName(
+                    Identifier("IDictionary"),
+                    TypeArgumentList(SeparatedList<TypeSyntax>([
+                        PredefinedType(Token(SyntaxKind.StringKeyword)),
+                        PredefinedType(Token(SyntaxKind.ObjectKeyword))
+                    ]))
+                ),
+                Identifier(ToDictionaryName)
+            ).WithModifiers(TokenList(Token(SyntaxKind.PublicKeyword)))
+            .WithBody(Block(returnStatement));
+        return method;
+    }
+
+    private static PropertyDeclarationSyntax GetPropertyDeclaration(PropertyInfo property)
+    {
+        return PropertyDeclaration(ParseTypeName(property.Type), Identifier(property.Name))
+            .AddModifiers(Token(SyntaxKind.PublicKeyword))
+            .AddAccessorListAccessors(
+                AccessorDeclaration(SyntaxKind.GetAccessorDeclaration)
+                    .WithSemicolonToken(Token(SyntaxKind.SemicolonToken)),
+                AccessorDeclaration(SyntaxKind.SetAccessorDeclaration)
+                    .AddModifiers(Token(SyntaxKind.PrivateKeyword))
+                    .WithSemicolonToken(Token(SyntaxKind.SemicolonToken))
+            );
+    }
+
+
+    private static MethodDeclarationSyntax FromDictionaryMethodDeclaration(string instanceType,
+        ImmutableArray<PropertyInfo> properties)
+    {
+        var body = Block(new StatementSyntax[]
+            {
+                InstanceDeclarationStatement(instanceType)
+            }
+            .Concat(properties.Select(InstancePropertyExtractionStatement))
+            .Append(ReturnStatement(IdentifierName(InstanceVariable)))
+        );
+        var parameters =
+            ParameterList(
+                SingletonSeparatedList(
+                    Parameter(Identifier(DictionaryVariable))
+                        .WithType(
+                            GenericName(
+                                Identifier("Dictionary"),
+                                TypeArgumentList(SeparatedList<TypeSyntax>([
+                                    PredefinedType(Token(SyntaxKind.StringKeyword)),
+                                    PredefinedType(Token(SyntaxKind.ObjectKeyword))
+                                ]))
+                            )
+                        )
+                )
+            );
+
+        var method = MethodDeclaration(ParseTypeName(instanceType), Identifier(FromDictionaryName))
+            .AddModifiers(
+                Token(SyntaxKind.PublicKeyword),
+                Token(SyntaxKind.StaticKeyword))
+            .WithParameterList(parameters)
+            .WithBody(body);
+
+        return method;
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="property"></param>
+    /// <param name="dictionaryVariable"></param>
+    /// <returns></returns>
+    /// <remarks>
+    ///     <code>
+    ///         if (dictionary.TryGetValue(property, out var value))
+    ///         {
+    ///             instance.property = (type)Convert.ChangeType(value);
+    ///         }
+    ///     </code>
+    /// </remarks>
+    private static StatementSyntax InstancePropertyExtractionStatement(PropertyInfo property)
+    {
+        // (type)Convert.ChangeType(value, typeof(type))
+        var cast = CastExpression(
+            type: ParseTypeName(property.Type),
+            expression: InvocationExpression(
+                MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression,
+                    IdentifierName(nameof(Convert)),
+                    IdentifierName(nameof(Convert.ChangeType))
+                ),
+                ArgumentList(
+                    SeparatedList<ArgumentSyntax>([
+                        Argument(IdentifierName($"value{property.Name}")),
+                        Argument(TypeOfExpression(ParseTypeName(property.Type)))
+                    ])
+                )
+            )
+        );
+
+        // instance.property = cast
+        var assignment = AssignmentExpression(SyntaxKind.SimpleAssignmentExpression,
+            left: MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression,
+                IdentifierName(InstanceVariable),
+                IdentifierName(property.Name)
+            ),
+            right: cast
+        );
+
+        // dictionary.TryGetValue(nameof(property), out var value)
+        var condition = InvocationExpression(
+            MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression,
+                IdentifierName(DictionaryVariable),
+                IdentifierName("TryGetValue")
+            ), ArgumentList(
+                SeparatedList<ArgumentSyntax>(
+                    [
+                        Argument(InvocationExpression(
+                            IdentifierName("nameof"),
+                            ArgumentList(SingletonSeparatedList(Argument(IdentifierName(property.Name))))
+                        )),
+                        Argument(
+                            DeclarationExpression(
+                                ParseTypeName("var"),
+                                SingleVariableDesignation(Identifier($"value{property.Name}"))
+                            )
+                        ).WithRefKindKeyword(Token(SyntaxKind.OutKeyword))
+                    ]
+                )
+            )
+        );
+
+        var conditional = IfStatement(
+            condition,
+            Block(ExpressionStatement(assignment))
+        );
+
+        return conditional;
+    }
+
+    private static LocalDeclarationStatementSyntax InstanceDeclarationStatement(string instanceType)
+    {
+        return
+            LocalDeclarationStatement(
+                VariableDeclaration(IdentifierName("var"))
+                    .AddVariables(
+                        VariableDeclarator(InstanceVariable)
+                            .WithInitializer(
+                                EqualsValueClause(
+                                    ObjectCreationExpression(ParseTypeName(instanceType))
+                                        .WithArgumentList(ArgumentList())
+                                )
+                            )
+                    )
+            );
+    }
+}
+
+public class SomeArgs : INavArgs
+{
+    public string Name { get; set; }
+    public int Id { get; private set; }
+
+    public IDictionary<string, object> ToDictionary()
+    {
+        return new Dictionary<string, object>
+        {
+            [nameof(Name)] = Name,
+            [nameof(Id)] = Id
+        };
+    }
+
+    public static SomeArgs FromDictionary(IDictionary<string, object> dictionary)
+    {
+        var instance = new SomeArgs();
+        if (dictionary.TryGetValue(nameof(Name), out var name))
+        {
+            instance.Name = (string)Convert.ChangeType(name, typeof(string));
+        }
+
+        if (dictionary.TryGetValue(nameof(Id), out var id))
+        {
+            instance.Id = (int)Convert.ChangeType(id, typeof(int));
+        }
+
+        return new SomeArgs
+        {
+            Name = (string)dictionary[nameof(Name)],
+            Id = (int)dictionary[nameof(Id)]
+        };
+    }
+}

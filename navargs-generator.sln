@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NavArgs.Generator", "NavArgs.Generator\NavArgs.Generator\NavArgs.Generator.csproj", "{34CBB25D-5732-4129-85BF-38B36B97447E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NavArgs.Generator.Sample", "NavArgs.Generator\NavArgs.Generator.Sample\NavArgs.Generator.Sample.csproj", "{418CC6B1-FB01-4EEF-A9FB-D4D53DD00CCE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NavArgs.Generator.Tests", "NavArgs.Generator\NavArgs.Generator.Tests\NavArgs.Generator.Tests.csproj", "{389ABC95-F78F-4AD2-BB05-D0F03504EC72}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{34CBB25D-5732-4129-85BF-38B36B97447E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34CBB25D-5732-4129-85BF-38B36B97447E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34CBB25D-5732-4129-85BF-38B36B97447E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34CBB25D-5732-4129-85BF-38B36B97447E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{418CC6B1-FB01-4EEF-A9FB-D4D53DD00CCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{418CC6B1-FB01-4EEF-A9FB-D4D53DD00CCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{418CC6B1-FB01-4EEF-A9FB-D4D53DD00CCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{418CC6B1-FB01-4EEF-A9FB-D4D53DD00CCE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{389ABC95-F78F-4AD2-BB05-D0F03504EC72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{389ABC95-F78F-4AD2-BB05-D0F03504EC72}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{389ABC95-F78F-4AD2-BB05-D0F03504EC72}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{389ABC95-F78F-4AD2-BB05-D0F03504EC72}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

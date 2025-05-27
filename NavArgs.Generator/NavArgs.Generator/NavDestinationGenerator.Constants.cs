@@ -26,6 +26,7 @@ public partial class NavDestinationGenerator
           public interface {{NavInterfaceName}}
           {
                public string Route { get; }
+               public INavArgs GetArgs();
           }
           """;
 

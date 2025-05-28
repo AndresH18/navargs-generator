@@ -1,26 +1,43 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
-        <LangVersion>latest</LangVersion>
-        <Nullable>enable</Nullable>
-        <Title>NavArgs.Abstractions</Title>
         <Version>1.0.2</Version>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <IsPackable>true</IsPackable>
+        <Nullable>enable</Nullable>
+        <LangVersion>latest</LangVersion>
+        <ImplicitUsings>true</ImplicitUsings>
+
+        <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+        <IsRoslynComponent>true</IsRoslynComponent>
+<!--        <GeneratePackageOnBuild>true</GeneratePackageOnBuild> &lt;!&ndash; Generates a package at build &ndash;&gt;-->
+        <IncludeBuildOutput>false</IncludeBuildOutput> <!-- Do not include the generator as a lib dependency -->
+        
+        <RootNamespace>NavArgs.Generator</RootNamespace>
+        <NoWarn>$(NoWarn);NU5128</NoWarn>
     </PropertyGroup>
-    
+
     <PropertyGroup>
         <Authors>AndresH18</Authors>
         <PackageTags>roslyn;source-generator;navigation;codegen;csharp</PackageTags>
         <PackageProjectUrl>https://github.com/AndresH18/navargs-generator</PackageProjectUrl>
         <RepositoryUrl>https://github.com/AndresH18/navargs-generator</RepositoryUrl>
         <PackageId>NavArgs</PackageId>
-        <IncludeSymbols>true</IncludeSymbols>
-        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
         <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
 
+    <!-- This ensures the library will be packaged as a source generator when we use `dotnet pack` -->
     <ItemGroup>
-      <ProjectReference Include="..\NavArgs.Generator\NavArgs.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
+        <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+        <None Include="..\README.md" Pack="true" PackagePath="\" Link="README.md"/>
     </ItemGroup>
-    
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.3.0"/>
+    </ItemGroup>
+
 </Project>

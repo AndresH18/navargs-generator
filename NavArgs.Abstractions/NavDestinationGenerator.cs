@@ -13,7 +13,6 @@ namespace NavArgs.Generator;
 [Generator(LanguageNames.CSharp)]
 public class NavDestinationGenerator : IIncrementalGenerator
 {
-
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
         context.RegisterPostInitializationOutput(static ctx =>
@@ -22,7 +21,7 @@ public class NavDestinationGenerator : IIncrementalGenerator
             ctx.AddSource($"{NavInterfaceFullName}.g.cs", SourceText.From(NavInterfaceSourceCode, Encoding.UTF8));
             ctx.AddSource($"{ArgsInterfaceFullName}.g.cs", SourceText.From(ArgsInterfaceSourceCode, Encoding.UTF8));
         });
-        
+
         var provider = context.SyntaxProvider.ForAttributeWithMetadataName(
                 $"{NavAttributeFullName}",
                 static (node, _) => IsCandidate(node),
@@ -34,7 +33,7 @@ public class NavDestinationGenerator : IIncrementalGenerator
                     if (!(IsCandidateValidForCompilation(classDeclaration, context.SemanticModel) &&
                           IsCandidateSymbolValid(context.TargetSymbol)))
                     {
-                        return null!; // TODO: replace for transform return type
+                        return null!;
                     }
 
                     token.ThrowIfCancellationRequested();

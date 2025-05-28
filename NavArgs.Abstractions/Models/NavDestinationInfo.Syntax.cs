@@ -66,14 +66,14 @@ internal partial record NavDestinationInfo
         }
 
         return ClassDeclaration(info.QualifiedName)
-                // .WithBaseList(BaseList(SeparatedList<BaseTypeSyntax>([
-                //         SimpleBaseType(ParseTypeName(NavInterfaceName))
-                //     ]))
-                // )
-                .WithMembers(members)
-                .WithModifiers(TokenList(
-                    Token(SyntaxKind.PartialKeyword)
-                ));
+            // .WithBaseList(BaseList(SeparatedList<BaseTypeSyntax>([
+            //         SimpleBaseType(ParseTypeName(NavInterfaceName))
+            //     ]))
+            // )
+            .WithMembers(members)
+            .WithModifiers(TokenList(
+                Token(SyntaxKind.PartialKeyword)
+            ));
     }
 
     private static ClassDeclarationSyntax ArgsClassDeclaration(NavDestinationInfo info)

@@ -2,7 +2,7 @@
 
 internal static class Constants
 {
-    internal const string Namespace = "Generators";
+    internal const string Namespace = "NavArgs.Abstractions";
     internal const string NavAttributeName = "NavDestinationAttribute";
     internal const string NavInterfaceName = "INavDestination";
     internal const string ArgsInterfaceName = "INavArgs";

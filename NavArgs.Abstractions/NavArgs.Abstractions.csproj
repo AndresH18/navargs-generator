@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <LangVersion>latest</LangVersion>
+        <Nullable>enable</Nullable>
+        <Authors>AndresH18</Authors>
+        <PackageTags>roslyn;source-generator;navigation;codegen;csharp</PackageTags>
+        <PackageProjectUrl>https://github.com/AndresH18/navargs-generator</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/AndresH18/navargs-generator</RepositoryUrl>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\NavArgs.Generator\NavArgs.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
+    </ItemGroup>
+    
+</Project>

@@ -20,7 +20,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\NavArgs.Generator\NavArgs.Generator.csproj"/>
+        <ProjectReference Include="..\Generator\Generator.csproj"/>
     </ItemGroup>
 
 

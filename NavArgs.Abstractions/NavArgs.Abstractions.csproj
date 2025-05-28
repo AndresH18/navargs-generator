@@ -4,10 +4,19 @@
         <TargetFramework>net8.0</TargetFramework>
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
+        <Title>NavArgs.Abstractions</Title>
+        <Version>1.0.2</Version>
+    </PropertyGroup>
+    
+    <PropertyGroup>
         <Authors>AndresH18</Authors>
         <PackageTags>roslyn;source-generator;navigation;codegen;csharp</PackageTags>
         <PackageProjectUrl>https://github.com/AndresH18/navargs-generator</PackageProjectUrl>
         <RepositoryUrl>https://github.com/AndresH18/navargs-generator</RepositoryUrl>
+        <PackageId>NavArgs</PackageId>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
 
     <ItemGroup>

@@ -1,0 +1,33 @@
+name: Build and Release
+# Builds and create a release of the app
+
+on:
+  push:
+    tags:
+      - "v*" # Triggers on version tags like v1.0.0
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions: 
+      contents: write # Required for creating release
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.x.x
+      - name: Restore Dependencies
+        run: dotnet restore
+      - name: Build
+        run: dotnet build -c Release --no-restore
+      - name: Test
+        run: dotnet test -c Release
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          draft: true
+          fail_on_unmatched_files: true 
+          make_latest: true 
+          
+      

@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Set Version from Relase
+      - name: Set Version from Release
         if: github.event_name == 'release'
         run: |
           # remove 'ref/tags/v' prefix from github.ref if present
@@ -23,7 +23,6 @@ jobs:
           # Remove 'v' prefix if present
           VERSION=${VERSION#v}
           echo "VERSION=$VERSION" >> $GITHUB_ENV
-
       - name: Set Version from Workflow dispatch
         if: github.event_name == 'workflow_dispatch'
         run: echo "VERSION=${{ github.event.inputs.version }}" >> $GITHUB_ENV
@@ -41,5 +40,18 @@ jobs:
       
       - name: Pack
         run: dotnet pack NavArgs.Abstractions -o nupkgs -c Release --no-build
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4.6.2
+        with:
+          name: nupkgs
+          path: nupkgs/
+      
+      - name: Publish Nuget
+        run: |
+          for nuget in ./nupkgs/*.nupkg
+          do 
+            dotnet nuget push "$nuget" --api-key ${{ secrets.NUGET_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
+          done
       
           

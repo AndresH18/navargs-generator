@@ -18,11 +18,11 @@ jobs:
       - name: Set Version from Release
         if: github.event_name == 'release'
         run: |
-          # remove 'ref/tags/v' prefix from github.ref if present
-          VERSION_TAG=${GITHUB_REF#ref/tags/v}
-          # Remove 'v' prefix if present
-          VERSION_TAG=${VERSION_TAG#v}
-          echo "VERSION_TAG=$VERSION" >> $GITHUB_ENV
+          # remove 'refs/tags/v' prefix from github.ref if present
+          echo $GITHUB_REF
+          VERSION_TAG=${GITHUB_REF#refs/tags/v}
+          echo $VERSION_TAG
+          echo "VERSION_TAG=$VERSION_TAG" >> $GITHUB_ENV
       - name: Set Version from Workflow dispatch
         if: github.event_name == 'workflow_dispatch'
         run: echo "VERSION_TAG=${{ github.event.inputs.version }}" >> $GITHUB_ENV

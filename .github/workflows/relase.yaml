@@ -1,4 +1,4 @@
-name: Build and Release
+name: Create Release
 # Builds and create a release of the app
 
 on:
@@ -28,6 +28,4 @@ jobs:
         with:
           draft: true
           fail_on_unmatched_files: true 
-          make_latest: true 
-          
-      
+          make_latest: true       

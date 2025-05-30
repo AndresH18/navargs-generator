@@ -14,7 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NavArgs.Abstractions.Tests"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "github", "github", "{D06CAD27-C3F8-49DE-B77C-E60896F3612A}"
 	ProjectSection(SolutionItems) = preProject
-		.github\workflows\relase.yaml = .github\workflows\relase.yaml
+		.github\workflows\publish.yaml = .github\workflows\publish.yaml
+		.github\workflows\release.yaml = .github\workflows\release.yaml
 	EndProjectSection
 EndProject
 Global

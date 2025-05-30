@@ -1,0 +1,45 @@
+name: Publish Nuget
+
+on:
+  release:
+    types: [ published ]
+  workflow_dispatch:
+    inputs:
+      version:
+        type: string
+        description: Version to publish (eg, 1.0.0)
+        required: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set Version from Relase
+        if: github.event_name == 'release'
+        run: |
+          # remove 'ref/tags/v' prefix from github.ref if present
+          VERSION=${GITHUB_REF#ref/tags/v}
+          # Remove 'v' prefix if present
+          VERSION=${VERSION#v}
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Set Version from Workflow dispatch
+        if: github.event_name == 'workflow_dispatch'
+        run: echo "VERSION=${{ github.event.inputs.version }}" >> $GITHUB_ENV
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.x.x
+
+      - name: Restore Dependencies
+        run: dotnet restore
+      
+      - name: Build
+        run: dotnet build NavArgs.Abstractions -c Release -p:Version=${VERSION} --no-restore
+      
+      - name: Pack
+        run: dotnet pack NavArgs.Abstractions -o nupkgs -c Release --no-build
+      
+          

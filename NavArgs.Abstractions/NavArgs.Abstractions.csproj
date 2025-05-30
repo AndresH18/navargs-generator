@@ -13,7 +13,7 @@
 <!--        <GeneratePackageOnBuild>true</GeneratePackageOnBuild> &lt;!&ndash; Generates a package at build &ndash;&gt;-->
         <IncludeBuildOutput>false</IncludeBuildOutput> <!-- Do not include the generator as a lib dependency -->
         
-        <RootNamespace>NavArgs.Generator</RootNamespace>
+        <RootNamespace>NavArgs.Abstractions</RootNamespace>
         <NoWarn>$(NoWarn);NU5128</NoWarn>
     </PropertyGroup>
 

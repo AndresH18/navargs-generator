@@ -1,14 +1,13 @@
 ﻿using System.Collections.Immutable;
-using System.Diagnostics;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
-using NavArgs.Generator.Models;
-using static NavArgs.Generator.Constants;
+using static NavArgs.Abstractions.Constants;
+using NavDestinationInfo = NavArgs.Abstractions.Models.NavDestinationInfo;
 
-namespace NavArgs.Generator;
+namespace NavArgs.Abstractions.Generator;
 
 [Generator(LanguageNames.CSharp)]
 public class NavDestinationGenerator : IIncrementalGenerator

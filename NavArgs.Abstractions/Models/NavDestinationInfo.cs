@@ -1,9 +1,9 @@
 ﻿using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
-using NavArgs.Generator.Helpers;
-using static NavArgs.Generator.Constants;
+using NavArgs.Abstractions.Helpers;
+using static NavArgs.Abstractions.Constants;
 
-namespace NavArgs.Generator.Models;
+namespace NavArgs.Abstractions.Models;
 
 internal partial record class NavDestinationInfo(
     string FilenameHint,

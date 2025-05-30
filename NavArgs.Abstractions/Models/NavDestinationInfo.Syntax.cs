@@ -3,9 +3,9 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
-using static NavArgs.Generator.Constants;
+using static NavArgs.Abstractions.Constants;
 
-namespace NavArgs.Generator.Models;
+namespace NavArgs.Abstractions.Models;
 
 internal partial record NavDestinationInfo
 {
@@ -30,7 +30,7 @@ internal partial record NavDestinationInfo
         ];
 
         MemberDeclarationSyntax[] members;
-        if (string.IsNullOrEmpty(Namespace))
+        if (string.IsNullOrEmpty(Constants.Namespace))
         {
             members = classDeclarations;
         }
@@ -38,7 +38,7 @@ internal partial record NavDestinationInfo
         {
             members =
             [
-                NamespaceDeclaration(IdentifierName(Namespace))
+                NamespaceDeclaration(IdentifierName(Constants.Namespace))
                     .AddMembers(classDeclarations)
             ];
         }
@@ -53,7 +53,7 @@ internal partial record NavDestinationInfo
             .NormalizeWhitespace();
     }
 
-    private static ClassDeclarationSyntax PartialClassDeclaration(NavDestinationInfo info)
+    private static ClassDeclarationSyntax PartialClassDeclaration(Abstractions.Models.NavDestinationInfo info)
     {
         MemberDeclarationSyntax[] membersList;
         if (info.Route != null)
@@ -87,7 +87,7 @@ internal partial record NavDestinationInfo
             ));
     }
 
-    private static ClassDeclarationSyntax ArgsClassDeclaration(NavDestinationInfo info)
+    private static ClassDeclarationSyntax ArgsClassDeclaration(Abstractions.Models.NavDestinationInfo info)
     {
         var baseTypes = BaseList(SeparatedList<BaseTypeSyntax>(
         [
@@ -412,7 +412,7 @@ internal partial record NavDestinationInfo
             );
     }
 
-    private static MethodDeclarationSyntax GetArgsMethodDeclaration(NavDestinationInfo info)
+    private static MethodDeclarationSyntax GetArgsMethodDeclaration(Abstractions.Models.NavDestinationInfo info)
     {
         var initializationList = SeparatedList<ExpressionSyntax>(info.Properties.Select(p =>
             AssignmentExpression(

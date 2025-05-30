@@ -19,13 +19,13 @@ jobs:
         if: github.event_name == 'release'
         run: |
           # remove 'ref/tags/v' prefix from github.ref if present
-          VERSION=${GITHUB_REF#ref/tags/v}
+          VERSION_TAG=${GITHUB_REF#ref/tags/v}
           # Remove 'v' prefix if present
-          VERSION=${VERSION#v}
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          VERSION_TAG=${VERSION#v}
+          echo "VERSION_TAG=$VERSION" >> $GITHUB_ENV
       - name: Set Version from Workflow dispatch
         if: github.event_name == 'workflow_dispatch'
-        run: echo "VERSION=${{ github.event.inputs.version }}" >> $GITHUB_ENV
+        run: echo "VERSION_TAG=${{ github.event.inputs.version }}" >> $GITHUB_ENV
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
@@ -36,7 +36,7 @@ jobs:
         run: dotnet restore
       
       - name: Build
-        run: dotnet build NavArgs.Abstractions -c Release -p:Version=${VERSION} --no-restore
+        run: dotnet build NavArgs.Abstractions -c Release -p:Version=${VERSION_TAG} --no-restore
       
       - name: Test
         run: dotnet test -c Release

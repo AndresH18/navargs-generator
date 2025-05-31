@@ -44,7 +44,7 @@ public static class Constants
                 public string Name { get; init; }
                 public string Email { get; init; }
 
-                public static AccountDetailsArgs FromDictionary(Dictionary<string, object> dictionary)
+                public static AccountDetailsArgs FromDictionary(IDictionary<string, object> dictionary)
                 {
                     return new AccountDetailsArgs()
                     {Id = (int)Convert.ChangeType(dictionary[nameof(Id)], typeof(int)), Name = (string)Convert.ChangeType(dictionary[nameof(Name)], typeof(string)), Email = (string)Convert.ChangeType(dictionary[nameof(Email)], typeof(string))};

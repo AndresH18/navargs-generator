@@ -15,6 +15,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.release.tag_name }}
       - name: Set Version from Release
         if: github.event_name == 'release'
         run: |
@@ -42,7 +44,7 @@ jobs:
         run: dotnet test -c Release
       
       - name: Pack
-        run: dotnet pack NavArgs.Abstractions -o nupkgs -c Release --no-build
+        run: dotnet pack NavArgs.Abstractions -o nupkgs -c Release --no-build -p:Version=${VERSION_TAG}
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4.6.2

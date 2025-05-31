@@ -23,19 +23,32 @@ internal partial record class NavDestinationInfo(
 
         var properties = symbol.GetMembers()
             .OfType<IPropertySymbol>()
-            .Where(p => p.DeclaredAccessibility == Accessibility.Public)
-            .Where(p => p.Name != "Route")
-            .Where(p => p.Type.IsPrimitiveOrString())
+            .Where(ShouldIncludeProperty)
             .Select(p => new PropertyInfo(p.Name, p.Type.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat)))
             .ToImmutableArray();
 
         return new NavDestinationInfo(filenameHint, name, @namespace, route, properties);
     }
 
+    private static bool ShouldIncludeProperty(IPropertySymbol property)
+    {
+        if (property.DeclaredAccessibility != Accessibility.Public)
+            return false;
+        
+        if (property.Name == "Route")
+            return false;
+        
+        // return property.Type.IsPrimitiveOrString();
+        if (property.GetAttributes().Length == 0)
+            return true;
+        
+        return property.GetAttributes().All(a => a.AttributeClass?.ToDisplayString() != IgnoreNavPropertyAttributeFullName);
+    }
+
     private static void GetAttributeData(INamedTypeSymbol symbol, out string? route)
     {
         var attribute = symbol.GetAttributes().First(a =>
-            a.AttributeClass?.ToDisplayString() == $"{NavAttributeFullName}");
+            a.AttributeClass?.ToDisplayString() == NavAttributeFullName);
         // route = attribute.ConstructorArguments.First().Value?.ToString();
         route = attribute.NamedArguments
             .FirstOrDefault(kvp => kvp.Key == "Route")

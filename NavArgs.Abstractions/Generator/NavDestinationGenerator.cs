@@ -17,6 +17,7 @@ public class NavDestinationGenerator : IIncrementalGenerator
         context.RegisterPostInitializationOutput(static ctx =>
         {
             ctx.AddSource($"{NavAttributeFullName}.g.cs", SourceText.From(NavAttributeSourceCode, Encoding.UTF8));
+            ctx.AddSource($"{IgnoreNavPropertyAttributeFullName}.g.cs", SourceText.From(IgnoreNavPropertyAttributeSourceCode, Encoding.UTF8));
             ctx.AddSource($"{NavInterfaceFullName}.g.cs", SourceText.From(NavInterfaceSourceCode, Encoding.UTF8));
             ctx.AddSource($"{ArgsInterfaceFullName}.g.cs", SourceText.From(ArgsInterfaceSourceCode, Encoding.UTF8));
         });

@@ -18,6 +18,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "github", "github", "{D06CAD
 		.github\workflows\release.yaml = .github\workflows\release.yaml
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NavArgs.Abstractions.Sample", "NavArgs.Abstractions.Sample\NavArgs.Abstractions.Sample.csproj", "{D233F8A5-D5E6-46C1-91B2-8E6EF5EE926A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -88,6 +90,18 @@ Global
 		{4831970B-2F47-4912-B11A-B602EB447743}.Release|x64.Build.0 = Release|Any CPU
 		{4831970B-2F47-4912-B11A-B602EB447743}.Release|x86.ActiveCfg = Release|Any CPU
 		{4831970B-2F47-4912-B11A-B602EB447743}.Release|x86.Build.0 = Release|Any CPU
+		{D233F8A5-D5E6-46C1-91B2-8E6EF5EE926A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D233F8A5-D5E6-46C1-91B2-8E6EF5EE926A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D233F8A5-D5E6-46C1-91B2-8E6EF5EE926A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D233F8A5-D5E6-46C1-91B2-8E6EF5EE926A}.Debug|x64.Build.0 = Debug|Any CPU
+		{D233F8A5-D5E6-46C1-91B2-8E6EF5EE926A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D233F8A5-D5E6-46C1-91B2-8E6EF5EE926A}.Debug|x86.Build.0 = Debug|Any CPU
+		{D233F8A5-D5E6-46C1-91B2-8E6EF5EE926A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D233F8A5-D5E6-46C1-91B2-8E6EF5EE926A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D233F8A5-D5E6-46C1-91B2-8E6EF5EE926A}.Release|x64.ActiveCfg = Release|Any CPU
+		{D233F8A5-D5E6-46C1-91B2-8E6EF5EE926A}.Release|x64.Build.0 = Release|Any CPU
+		{D233F8A5-D5E6-46C1-91B2-8E6EF5EE926A}.Release|x86.ActiveCfg = Release|Any CPU
+		{D233F8A5-D5E6-46C1-91B2-8E6EF5EE926A}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

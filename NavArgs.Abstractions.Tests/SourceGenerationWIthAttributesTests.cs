@@ -2,7 +2,6 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using NavArgs.Abstractions.Generator;
-using NavArgs.Generator;
 
 namespace NavArgs.Abstractions.Tests;
 

@@ -1,4 +1,4 @@
-﻿namespace NavArgs.Generator;
+﻿namespace NavArgs.Abstractions;
 
 internal interface INavDestination
 {

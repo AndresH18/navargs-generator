@@ -34,6 +34,6 @@
         <value>Non primitive or string properties cannot be used as arguments.</value>
     </data>
     <data name="NVA002MessageFormat" xml:space="preserve">
-        <value>Property '{0}' of '{1}' must have attribute {2}</value>
+        <value>Property '{0}' from '{1}' must have attribute {2}</value>
     </data>
 </root>

@@ -96,7 +96,7 @@ namespace NavArgs.Abstractions {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Property &apos;{0}&apos; of &apos;{1}&apos; must have attribute {2}.
+        ///   Looks up a localized string similar to Property &apos;{0}&apos; from &apos;{1}&apos; must have attribute {2}.
         /// </summary>
         internal static string NVA002MessageFormat {
             get {

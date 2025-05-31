@@ -42,7 +42,7 @@ jobs:
         run: dotnet test -c Release
       
       - name: Pack
-        run: dotnet pack NavArgs.Abstractions -o nupkgs -c Release --no-build
+        run: dotnet pack NavArgs.Abstractions -o nupkgs -c Release --no-build -p:Version=${VERSION_TAG}
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4.6.2

@@ -10,11 +10,11 @@ internal partial record class NavDestinationInfo(
     string QualifiedName,
     string Namespace,
     string? Route,
+    string? ArgsName,
     ImmutableArray<PropertyInfo> Properties)
 {
     public static NavDestinationInfo From(INamedTypeSymbol symbol)
     {
-        GetAttributeData(symbol, out var route);
         var name = symbol.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat);
         var filenameHint = symbol.GetFullyQualifiedMetadataName();
         var @namespace =
@@ -26,8 +26,10 @@ internal partial record class NavDestinationInfo(
             .Where(ShouldIncludeProperty)
             .Select(p => new PropertyInfo(p.Name, p.Type.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat)))
             .ToImmutableArray();
-
-        return new NavDestinationInfo(filenameHint, name, @namespace, route, properties);
+        
+        GetMetadataRoute(symbol, out var route);
+        GetMetadataArgsName(symbol, out var argsName);
+        return new NavDestinationInfo(filenameHint, name, @namespace, route, argsName, properties);
     }
 
     private static bool ShouldIncludeProperty(IPropertySymbol property)
@@ -45,7 +47,8 @@ internal partial record class NavDestinationInfo(
         return property.GetAttributes().All(a => a.AttributeClass?.ToDisplayString() != IgnoreNavPropertyAttributeFullName);
     }
 
-    private static void GetAttributeData(INamedTypeSymbol symbol, out string? route)
+    
+    private static void GetMetadataRoute(INamedTypeSymbol symbol, out string? route)
     {
         var attribute = symbol.GetAttributes().First(a =>
             a.AttributeClass?.ToDisplayString() == NavAttributeFullName);
@@ -53,5 +56,20 @@ internal partial record class NavDestinationInfo(
         route = attribute.NamedArguments
             .FirstOrDefault(kvp => kvp.Key == "Route")
             .Value.Value?.ToString();
+    }
+
+    private static void GetMetadataArgsName(INamedTypeSymbol symbol, out string? argsName)
+    {
+        var attribute = symbol.GetAttributes().First(a =>
+            a.AttributeClass?.ToDisplayString() == NavAttributeFullName);
+        
+        argsName = attribute.NamedArguments
+            .FirstOrDefault(kvp => kvp.Key == "ArgsName")
+            .Value.Value?.ToString();
+    }
+
+    private string GetArgsClassName()
+    {
+        return string.IsNullOrWhiteSpace(ArgsName) ? $"{QualifiedName}Args" : ArgsName!;
     }
 }

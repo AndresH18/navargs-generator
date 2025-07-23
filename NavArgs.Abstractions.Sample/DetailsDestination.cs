@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace NavArgs.Abstractions.Sample;
 
-[NavDestination(Route = "details")]
+[NavDestination(Route = "Details", ArgsName = "DetailArgs")]
 public partial class DetailsDestination : INavDestination
 {
     public int Id { get; set; }

@@ -112,5 +112,32 @@ namespace NavArgs.Abstractions {
                 return ResourceManager.GetString("NVA002Title", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Attribute property cannot be null or an empty string.
+        /// </summary>
+        internal static string NVA003Description {
+            get {
+                return ResourceManager.GetString("NVA003Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Property {0} of attribute {1} cannot be null or an empty string.
+        /// </summary>
+        internal static string NVA003MessageFormat {
+            get {
+                return ResourceManager.GetString("NVA003MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid Attribute Property Value.
+        /// </summary>
+        internal static string NVA003Title {
+            get {
+                return ResourceManager.GetString("NVA003Title", resourceCulture);
+            }
+        }
     }
 }

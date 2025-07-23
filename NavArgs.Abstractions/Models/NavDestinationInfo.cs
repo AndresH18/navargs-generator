@@ -5,7 +5,7 @@ using static NavArgs.Abstractions.Constants;
 
 namespace NavArgs.Abstractions.Models;
 
-internal partial record class NavDestinationInfo(
+internal partial record NavDestinationInfo(
     string FilenameHint,
     string QualifiedName,
     string Namespace,
@@ -24,9 +24,9 @@ internal partial record class NavDestinationInfo(
         var properties = symbol.GetMembers()
             .OfType<IPropertySymbol>()
             .Where(ShouldIncludeProperty)
-            .Select(p => new PropertyInfo(p.Name, p.Type.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat)))
+            .Select(GetPropertyInfo)
             .ToImmutableArray();
-        
+
         GetMetadataRoute(symbol, out var route);
         GetMetadataArgsName(symbol, out var argsName);
         return new NavDestinationInfo(filenameHint, name, @namespace, route, argsName, properties);
@@ -36,18 +36,27 @@ internal partial record class NavDestinationInfo(
     {
         if (property.DeclaredAccessibility != Accessibility.Public)
             return false;
-        
+
         if (property.Name == "Route")
             return false;
-        
+
         // return property.Type.IsPrimitiveOrString();
         if (property.GetAttributes().Length == 0)
             return true;
-        
-        return property.GetAttributes().All(a => a.AttributeClass?.ToDisplayString() != IgnoreNavPropertyAttributeFullName);
+
+        return property.GetAttributes()
+            .All(a => a.AttributeClass?.ToDisplayString() != IgnoreNavPropertyAttributeFullName);
     }
 
-    
+    private static PropertyInfo GetPropertyInfo(IPropertySymbol property)
+    {
+        var name = property.Name;
+        var type = property.Type.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat).Trim();
+        var isNullable = property.Type.NullableAnnotation == NullableAnnotation.Annotated;
+        var isSimple = property.Type.IsPrimitiveOrString();
+        return new PropertyInfo(name, type, isNullable, isSimple);
+    }
+
     private static void GetMetadataRoute(INamedTypeSymbol symbol, out string? route)
     {
         var attribute = symbol.GetAttributes().First(a =>
@@ -62,7 +71,7 @@ internal partial record class NavDestinationInfo(
     {
         var attribute = symbol.GetAttributes().First(a =>
             a.AttributeClass?.ToDisplayString() == NavAttributeFullName);
-        
+
         argsName = attribute.NamedArguments
             .FirstOrDefault(kvp => kvp.Key == "ArgsName")
             .Value.Value?.ToString();

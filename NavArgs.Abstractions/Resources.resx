@@ -28,19 +28,19 @@
         <value>Type '{0}' must implement '{1}'</value>
     </data>
     <data name="NVA002Title" xml:space="preserve">
-        <value>Add IgnoreNavPropertyAttribute</value>
+        <value>Property will become nullable</value>
     </data>
     <data name="NVA002Description" xml:space="preserve">
-        <value>Non primitive or string properties cannot be used as arguments.</value>
+        <value>Reference types will be annotated as nullable in generated Args class.</value>
     </data>
     <data name="NVA002MessageFormat" xml:space="preserve">
-        <value>Property '{0}' from '{1}' must have attribute {2}</value>
+        <value>Property '{0}' will be nullable in Associated Args class</value>
     </data>
     <data name="NVA003Title" xml:space="preserve">
         <value>Invalid Attribute Property Value</value>
     </data>
     <data name="NVA003Description" xml:space="preserve">
-        <value>Attribute property cannot be null or an empty string</value>
+        <value>Attribute property cannot be null or an empty string.</value>
     </data>
     <data name="NVA003MessageFormat" xml:space="preserve">
         <value>Property {0} of attribute {1} cannot be null or an empty string</value>

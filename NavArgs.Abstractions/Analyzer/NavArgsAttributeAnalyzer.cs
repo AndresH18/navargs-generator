@@ -106,29 +106,17 @@ public class NavArgsAttributeAnalyzer : DiagnosticAnalyzer
     {
         var symbol = (INamedTypeSymbol)context.Symbol;
         foreach (var property in symbol.GetMembers().OfType<IPropertySymbol>()
-                     .Where(p => !p.Type.IsPrimitiveOrString()))
+                     .Where(p => !p.Type.IsPrimitiveOrString() && p.Type.NullableAnnotation != NullableAnnotation.Annotated))
         {
             if (property.GetAttributes()
                 .Any(a => a.AttributeClass?.ToDisplayString() == IgnoreNavPropertyAttributeFullName)
                )
                 continue;
 
-            var diagnostic = Diagnostic.Create(DiagnosticRules.NVA002_InvalidProperty,
+            var diagnostic = Diagnostic.Create(DiagnosticRules.NVA002_ReferenceTypeNullable,
                 property.Locations[0],
                 property.Name, symbol.Name, IgnoreNavPropertyAttributeFullName);
             context.ReportDiagnostic(diagnostic);
         }
-    }
-
-    private static void CheckAttributeUsage(SymbolAnalysisContext context)
-    {
-        var symbol = (INamedTypeSymbol)context.Symbol;
-        var attribute = symbol.GetAttributes().First(a => a.AttributeClass?.ToDisplayString() == NavAttributeFullName);
-
-        var routeArgument = attribute.NamedArguments
-            .FirstOrDefault(kvp => kvp.Key == "Route").Value;
-
-        var argsNameArgument = attribute.NamedArguments
-            .FirstOrDefault(kvp => kvp.Key == "ArgsName").Value.Value?.ToString();
     }
 }

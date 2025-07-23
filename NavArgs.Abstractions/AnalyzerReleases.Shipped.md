@@ -1,10 +1,18 @@
+## Release 2.2.0
+
+### New Rules
+
+Rule ID | Category | Severity | Notes
+--------|----------|----------|--------------------
+NVA002  | Usage    | Info     | Reference types will be marked as nullables in the generated Args class.
+
 ## Release 2.1.0
 
 ### New Rules
 
 Rule ID | Category | Severity | Notes
 --------|----------|----------|--------------------
-NVA003  | Usage    | Error    | Attribute property must not be null or empty string
+NVA003  | Usage    | Error    | Attribute property must not be null or empty string.
 
 ## Release 1.1
 
@@ -13,7 +21,6 @@ NVA003  | Usage    | Error    | Attribute property must not be null or empty str
 Rule ID | Category | Severity | Notes
 --------|----------|----------|--------------------
 NVA001  | Usage    | Warning  | Type should implement INavDestination interface.
-NVA002 | Usage | Error | Property must be primitive, string or marked with IgnoreNavPropertyAttribute
 
 ## Release 1.0
 

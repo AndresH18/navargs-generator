@@ -7,6 +7,13 @@ namespace NavArgs.Abstractions.Sample;
 public partial class DetailsDestination : INavDestination
 {
     public int Id { get; set; }
-    [IgnoreNavProperty]
-    public object Complex { get; set; } = null!;
+    public int? Id2 { get; set; }
+    
+    // [IgnoreNavProperty]
+    public B? Complex { get; set; } = null!;
+}
+
+public class B
+{
+    
 }

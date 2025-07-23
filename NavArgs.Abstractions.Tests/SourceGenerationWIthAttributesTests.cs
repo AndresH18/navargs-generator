@@ -30,11 +30,20 @@ public partial class SourceGenerationWIthAttributesTests
 
         var generatedFileText = generatedFileSyntax.GetText().ToString();
         generatedFileText = SpaceRegex().Replace(generatedFileText, " ");
-        
+
         Assert.Equal(SpaceRegex().Replace(Constants.ExpectedAccountDetailsWithoutRouteClass, " "), generatedFileText,
             ignoreLineEndingDifferences: true, ignoreWhiteSpaceDifferences: true);
     }
 
     [GeneratedRegex(@"(\r\n|\r|\n)*")]
     private static partial Regex SpaceRegex();
+
+
+    [Fact]
+    public void Test()
+    {
+        string i = null!;
+        var ii = i as int?;
+        var iii = (int?)i;
+    }
 }

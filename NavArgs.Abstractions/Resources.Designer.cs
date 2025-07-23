@@ -87,7 +87,7 @@ namespace NavArgs.Abstractions {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Non primitive or string properties cannot be used as arguments..
+        ///   Looks up a localized string similar to Reference types will be annotated as nullable in generated Args class..
         /// </summary>
         internal static string NVA002Description {
             get {
@@ -96,7 +96,7 @@ namespace NavArgs.Abstractions {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Property &apos;{0}&apos; from &apos;{1}&apos; must have attribute {2}.
+        ///   Looks up a localized string similar to Property &apos;{0}&apos; will be nullable in Associated Args class.
         /// </summary>
         internal static string NVA002MessageFormat {
             get {
@@ -105,7 +105,7 @@ namespace NavArgs.Abstractions {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add IgnoreNavPropertyAttribute.
+        ///   Looks up a localized string similar to Property will become nullable.
         /// </summary>
         internal static string NVA002Title {
             get {
@@ -114,7 +114,7 @@ namespace NavArgs.Abstractions {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Attribute property cannot be null or an empty string.
+        ///   Looks up a localized string similar to Attribute property cannot be null or an empty string..
         /// </summary>
         internal static string NVA003Description {
             get {

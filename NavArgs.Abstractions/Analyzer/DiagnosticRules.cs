@@ -9,7 +9,7 @@ internal static class DiagnosticRules
 {
     public static ImmutableArray<DiagnosticDescriptor> Rules => ImmutableArray.Create(
         NVA001_InterfaceMissing,
-        NVA002_InvalidProperty,
+        NVA002_ReferenceTypeNullable,
         NVA003_InvalidAttributeValue
     );
 
@@ -48,9 +48,9 @@ internal static class DiagnosticRules
         new LocalizableResourceString(nameof(Resources.NVA002MessageFormat), Resources.ResourceManager,
             typeof(Resources));
 
-    public static readonly DiagnosticDescriptor NVA002_InvalidProperty =
+    public static readonly DiagnosticDescriptor NVA002_ReferenceTypeNullable =
         new(NVA002_Id, NVA002_Title, NVA002_MessageFormat, "Usage",
-            DiagnosticSeverity.Error, isEnabledByDefault: true, description: NVA002_Description);
+            DiagnosticSeverity.Info, isEnabledByDefault: true, description: NVA002_Description);
     
     // NVA003
     public const string NVA003_Id = "NVA003";
@@ -67,6 +67,6 @@ internal static class DiagnosticRules
 
     public static readonly DiagnosticDescriptor NVA003_InvalidAttributeValue =
         new(NVA003_Id, NVA003_Title, NVA003_MessageFormat, "Usage",
-            DiagnosticSeverity.Error, isEnabledByDefault: true, description: NVA002_Description);
+            DiagnosticSeverity.Error, isEnabledByDefault: true, description: NVA003_Description);
 
 }

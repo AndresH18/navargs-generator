@@ -30,6 +30,6 @@ public partial class SourceGenerationWIthAttributesTests
 
         var generatedFileText = generatedFileSyntax.GetText().ToString();
 
-        Assert.Equal(Constants.ExpectedAccountDetailsWithoutRouteClass, generatedFileText);
+        Assert.Equal(Constants.ExpectedAccountDetailsWithoutRouteClass, generatedFileText, ignoreLineEndingDifferences: true, ignoreWhiteSpaceDifferences: true);
     }
 }

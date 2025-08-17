@@ -4,7 +4,7 @@
 
 Rule ID | Category | Severity | Notes
 --------|----------|----------|--------------------
-NVA002 | Usage | None     | Discontinued in version 3.0.0
+NVA002 | Usage | Disabled | Discontinued in version 3.0.0
 
 ## Release 2.1.0
 

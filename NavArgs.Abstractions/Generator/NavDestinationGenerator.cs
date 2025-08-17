@@ -20,6 +20,7 @@ public class NavDestinationGenerator : IIncrementalGenerator
             ctx.AddSource($"{IgnoreNavPropertyAttributeFullName}.g.cs", SourceText.From(IgnoreNavPropertyAttributeSourceCode, Encoding.UTF8));
             ctx.AddSource($"{NavInterfaceFullName}.g.cs", SourceText.From(NavInterfaceSourceCode, Encoding.UTF8));
             ctx.AddSource($"{ArgsInterfaceFullName}.g.cs", SourceText.From(ArgsInterfaceSourceCode, Encoding.UTF8));
+            ctx.AddSource($"{GenerationModeFullName}.g.cs", SourceText.From(GenerationModeSourceCode, Encoding.UTF8));
         });
 
         var provider = context.SyntaxProvider.ForAttributeWithMetadataName(

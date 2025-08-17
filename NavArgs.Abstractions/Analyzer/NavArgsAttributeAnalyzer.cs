@@ -34,7 +34,7 @@ public class NavArgsAttributeAnalyzer : DiagnosticAnalyzer
             return;
 
         CheckInterface(context);
-        CheckClassProperties(context);
+        // CheckClassProperties(context);
     }
 
     private static void AnalyzeAttribute(SyntaxNodeAnalysisContext context)
@@ -102,6 +102,7 @@ public class NavArgsAttributeAnalyzer : DiagnosticAnalyzer
         context.ReportDiagnostic(diagnostic);
     }
 
+    [Obsolete]
     private static void CheckClassProperties(SymbolAnalysisContext context)
     {
         var symbol = (INamedTypeSymbol)context.Symbol;
@@ -113,10 +114,10 @@ public class NavArgsAttributeAnalyzer : DiagnosticAnalyzer
                )
                 continue;
 
-            var diagnostic = Diagnostic.Create(DiagnosticRules.NVA002_InvalidProperty,
-                property.Locations[0],
-                property.Name, symbol.Name, IgnoreNavPropertyAttributeFullName);
-            context.ReportDiagnostic(diagnostic);
+            // var diagnostic = Diagnostic.Create(DiagnosticRules.NVA002_InvalidProperty,
+            //     property.Locations[0],
+            //     property.Name, symbol.Name, IgnoreNavPropertyAttributeFullName);
+            // context.ReportDiagnostic(diagnostic);
         }
     }
 

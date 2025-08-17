@@ -40,7 +40,7 @@
         <value>Invalid Attribute Property Value</value>
     </data>
     <data name="NVA003Description" xml:space="preserve">
-        <value>Attribute property cannot be null or an empty string</value>
+        <value>Attribute property cannot be null or an empty string.</value>
     </data>
     <data name="NVA003MessageFormat" xml:space="preserve">
         <value>Property {0} of attribute {1} cannot be null or an empty string</value>

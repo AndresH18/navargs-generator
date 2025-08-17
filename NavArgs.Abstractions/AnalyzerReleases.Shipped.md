@@ -1,3 +1,11 @@
+## Release 3.0.0
+
+### New Rules
+
+Rule ID | Category | Severity | Notes
+--------|----------|----------|--------------------
+NVA002 | Usage | None     | Discontinued in version 3.0.0
+
 ## Release 2.1.0
 
 ### New Rules

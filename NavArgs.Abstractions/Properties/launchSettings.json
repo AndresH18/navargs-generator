@@ -3,7 +3,7 @@
   "profiles": {
     "DebugRoslynSourceGenerator": {
       "commandName": "DebugRoslynComponent",
-      "targetProject": "../NavArgs.Generator.Sample/NavArgs.Generator.Sample.csproj"
+      "targetProject": "../NavArgs.Abstractions.Sample/NavArgs.Abstractions.Sample.csproj"
     }
   }
 }

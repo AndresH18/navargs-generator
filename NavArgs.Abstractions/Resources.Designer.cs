@@ -114,7 +114,7 @@ namespace NavArgs.Abstractions {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Attribute property cannot be null or an empty string.
+        ///   Looks up a localized string similar to Attribute property cannot be null or an empty string..
         /// </summary>
         internal static string NVA003Description {
             get {

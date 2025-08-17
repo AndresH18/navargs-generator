@@ -29,12 +29,7 @@ public partial class SourceGenerationWIthAttributesTests
         var generatedFileSyntax = runResult.GeneratedTrees.Single(t => t.FilePath.EndsWith("AccountDetails.g.cs"));
 
         var generatedFileText = generatedFileSyntax.GetText().ToString();
-        generatedFileText = SpaceRegex().Replace(generatedFileText, " ");
-        
-        Assert.Equal(SpaceRegex().Replace(Constants.ExpectedAccountDetailsWithoutRouteClass, " "), generatedFileText,
-            ignoreLineEndingDifferences: true, ignoreWhiteSpaceDifferences: true);
-    }
 
-    [GeneratedRegex(@"(\r\n|\r|\n)*")]
-    private static partial Regex SpaceRegex();
+        Assert.Equal(Constants.ExpectedAccountDetailsWithoutRouteClass, generatedFileText);
+    }
 }

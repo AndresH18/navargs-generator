@@ -236,37 +236,84 @@ internal partial record NavDestinationInfo
     {
         var instanceCreation = ArgsInstanceCreation(qualifiedName,
             SeparatedList(properties.Select(p => Argument(IdentifierName($"v{p.Name}")))));
-        var declarations = properties.Select(VarDeclaration);
-        var body = Block(declarations.Append(ReturnStatement(instanceCreation)));
+        var declarations = properties.OrderBy(p => p.IsNullable).Select(VarDeclaration);
+        var nullInit = properties.Where(p => p.IsNullable).Select(NullInit);
+
+        var body = Block(declarations.Concat(nullInit).Append(ReturnStatement(instanceCreation)));
 
         return body;
 
-        // var v = (type)dict[key];
+        // var v = (type)dict[key]; (not optional)
+        // var v = default(type); (optional)
         StatementSyntax VarDeclaration(PropertyInfo property)
         {
             var dictExtraction = DictionaryAccess(IdentifierName(DictionaryVariable), Argument(InvocationExpression(
                 IdentifierName("nameof"),
                 ArgumentList(SingletonSeparatedList(Argument(IdentifierName(property.Name)))))));
-            // cast
-            ExpressionSyntax cast;
+            ExpressionSyntax init;
             if (property.IsNullable)
-                cast = BinaryExpression(SyntaxKind.AsExpression,
-                    dictExtraction,
-                    ParseTypeName(property.TypeAs));
+            {
+                init = DefaultExpression(ParseTypeName(property.TypeAs));
+            }
             else
-                cast = CastExpression(
+            {
+                init = CastExpression(
                     ParseTypeName(property.TypeCast),
                     dictExtraction);
+            }
 
             var declaration = LocalDeclarationStatement(
                 VariableDeclaration(IdentifierName("var"))
                     .AddVariables(VariableDeclarator($"v{property.Name}")
-                        .WithInitializer(EqualsValueClause(cast)
+                        .WithInitializer(EqualsValueClause(init)
                         )
                     )
             );
 
             return declaration;
+        }
+
+        /*
+         * if (dict.TryGetValue("", out var o1) && o1 is string s1)
+         *      v1 = s1;
+         */
+        StatementSyntax NullInit(PropertyInfo property)
+        {
+            var dictAccess = InvocationExpression(
+                MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression,
+                    IdentifierName(DictionaryVariable),
+                    IdentifierName("TryGetValue")),
+                ArgumentList(SeparatedList<ArgumentSyntax>([
+                    Argument(InvocationExpression(
+                        IdentifierName("nameof"),
+                        ArgumentList(SingletonSeparatedList(Argument(IdentifierName(property.Name))))
+                    )),
+                    Argument(
+                        DeclarationExpression(
+                            ParseTypeName("var"),
+                            SingleVariableDesignation(Identifier($"o{property.Name}"))
+                        )).WithRefKindKeyword(Token(SyntaxKind.OutKeyword))
+                ]))
+            );
+
+            var isPattern = IsPatternExpression(
+                IdentifierName($"o{property.Name}"),
+                DeclarationPattern(
+                    ParseTypeName(property.RawType),
+                    SingleVariableDesignation(Identifier($"s{property.Name}"))
+                ));
+
+            var condition = BinaryExpression(SyntaxKind.LogicalAndExpression,
+                left: dictAccess,
+                right: isPattern
+            );
+
+            var assignment = AssignmentExpression(SyntaxKind.SimpleAssignmentExpression,
+                left: IdentifierName($"v{property.Name}"),
+                right: IdentifierName($"s{property.Name}"));
+            var conditional = IfStatement(condition, ExpressionStatement(assignment));
+
+            return conditional;
         }
     }
 

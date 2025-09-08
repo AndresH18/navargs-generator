@@ -4,7 +4,7 @@ using NavArgs.Abstractions.Helpers;
 
 namespace NavArgs.Abstractions.Models;
 
-internal partial record class NavDestinationInfo(
+internal partial record NavDestinationInfo(
     string FilenameHint,
     string QualifiedName,
     string Namespace,

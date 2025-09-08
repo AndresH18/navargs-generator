@@ -43,6 +43,8 @@ internal record PropertyInfo(
         }
     }
 
+    public string RawType => Type.Replace("?", "");
+
     public static PropertyInfo GetPropertyInfo(IPropertySymbol property)
     {
         var name = property.Name;

@@ -1,6 +1,6 @@
 # NavArgs.Abstraction
 
-![NuGet Version](https://img.shields.io/nuget/v/NavArgs)  
+[![NuGet Version](https://img.shields.io/nuget/v/NavArgs)](https://www.nuget.org/packages/NavArgs)  
 ![GitHub Release](https://img.shields.io/github/v/release/AndresH18/navargs-generator)
 
 
